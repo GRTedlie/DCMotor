@@ -85,7 +85,7 @@ if (GPIOFRIS & 0x10U){                      //Checking RIS for SW1, slow down, s
             H-=10;
             if (H==0){
                 H = 10;
-                GPIOADATA ^= 0xF8U;         //Toggle PA4, PA3 and PA6, PA7 to change direction
+                GPIOADATA ^= 0xF8U;         //Toggle PA3, PA4 and PA6, PA7 to change direction
             }
             L=100-H;
         GPIOFDATA^=0x04;                    //Blinky blue LED, PF2
@@ -96,8 +96,7 @@ else if (GPIOFRIS & 0x01U){                 //Checking RIS for SW2, speed up
             H+=10;
             L=100-H;
         }
-        GPIOFDATA^=0x04;                           //Blinky blue LED, PF2
+        GPIOFDATA^=0x04;                           //Blinky blue LED, PF2, check
     }
-
     //GPIOFCR &= ~0x11;                       //Clear/ack noth interrupts no matter what?                    
 }

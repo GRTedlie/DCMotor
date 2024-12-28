@@ -18,6 +18,9 @@ Defining general constants for port B offsets
 #define GPIOBDEN (*((volatile uint32_t *)(GPIOBBASE + GPIODEN)))
 #define GPIOBDATA (*((volatile uint32_t *)(GPIOBBASE + GPIODATAMASK)))
 
+#define GPIOBODR (*((volatile uint32_t *)(GPIOBBASE +GPIOODR)))        //Open drain used for I2CSDA
+
+
 //UART Specific below -- UART1 -- PB0 is U1RX -- PB1 is U1TX
 #define RCGCUART (*((volatile uint32_t *)0x400FE618U))
 
@@ -28,5 +31,18 @@ Defining general constants for port B offsets
 #define UART1LCRH (*((volatile uint32_t *)(UART1BASE + UARTLCRH)))      //UART0 Line Control Register
 #define UART1FR (*((volatile uint32_t *)(UART1BASE +UARTFR)))          //UART0 Flag Register
 #define UART1DR (*((volatile uint32_t *)(UART1BASE)))                   //UART Data Register (offset is 0x00)
+
+//I2C Specific below -- I2C0 --- PB2 is I2C0SCL , PB3 is I2C0SDA
+#define RCGCI2C (*((volatile uint32_t *)0x400FE620U))
+
+#define I2C0BASE 0x4002000
+#define I2C0MSA (*((volatile uint32_t*)(I2C0BASE + I2CMSA)))            //I2C0 Master Slave Address
+#define I2C0MCS (*((volatile uint32_t*)(I2C0BASE + I2CMCS)))            //I2C0 Master Control/Status
+#define I2C0MDR (*((volatile uint32_t*)(I2C0BASE + I2CMDR)))            //I2C0 Master Data
+#define I2C0MTPR (*((volatile uint32_t*)(I2C0BASE + I2CMTPR)))          //I2C0 Master Timer Period for SCL
+#define I2C0MCR (*((volatile uint32_t*)(I2C0BASE + I2CMCR)))            //I2C0 Master Configuration
+
+
+//instructions on pg 1016 of TM4C123 datasheet
 
 #endif

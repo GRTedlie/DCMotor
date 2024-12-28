@@ -37,4 +37,18 @@ Includes RCGCGPIO */
 #define GPIORIS 0x414U             //GPIO Raw Interrupt Status Register offset
 #define GPIOICR 0x41CU             //GPIO Interrupt Clear Register offset
 
+//GPIO Open Drain Select below -- used for I2C
+#define GPIOODR 0x50CU              //GPIO Open Drain Select
+
+
+//I2C Below
+#define I2CMCR 0x020U               //Master Configuration
+#define I2CMTPR 0x00CU              //Master Timer Period for SCL
+#define I2CMSA 0x000U               //Master Slave Address
+#define I2CMDR 0x008U               //Master Data
+#define I2CMCS 0x004U               //Master / Control Status
+#define I2CMIMR 0x010U              //Master Interrupt Mask
+#define I2CMRIS 0x014U              //Master Raw Interrupt Status
+
+
 #endif
