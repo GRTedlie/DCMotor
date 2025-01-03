@@ -40,13 +40,13 @@ void PLL_Init(void){
     //Step 3) Activate PLL by clearning PWRDN
     SYSCTL_RCC2_R &= ~0x00002000U;  
     //Step 4) Set the desired system divider
-    SYSCTL_RCC2_R |=0x40000000;                 //use the 400 MHz PLL output for divider
+    SYSCTL_RCC2_R |=0x40000000;                 //use the 400 MHz PLL output for divider; DIV400=1
     SYSCTL_RCC2_R = (SYSCTL_RCC2_R &~(0x7FU<<22))   //clearing SYSDIV2 AND SYSDIV2LSB
         +(0x02U<<23);                                   //setting SYSDIV2 for 80 MHz
         //DIV400 is set so using table 5-6 on Pg. 224, using SYSDIV2LSB
     // 400 MHz output / 5 (0x2 = 5 in table 5.6) = 80 MHz clock                     
-    //Step 5) Waiting for the PLL to lock by polling PLLRIS
-    while ((SYSCTL_RIS_R & 0x00000040U) == 0){}     //wait for PLLRIS bit
+    //Step 5) Waiting for the PLL to lock by polling PLLLRIS
+    while ((SYSCTL_RIS_R & 0x00000040U) == 0){}     //wait for PLLLRIS bit
     //Step 6) Enable use of PLL by clearing BYPASS
     SYSCTL_RCC2_R &= ~0x00000800U;
 

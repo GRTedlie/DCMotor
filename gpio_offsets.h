@@ -51,4 +51,8 @@ Includes RCGCGPIO */
 #define I2CMRIS 0x014U              //Master Raw Interrupt Status
 
 
+//Peripheral Ready
+#define PRGPIO (*((volatile uint32_t *)0x400FEA08))         //GPIO Peripheral Ready, B is bit 1
+#define PRI2C (*((volatile uint32_t *)0x400FEA20))          //I2C Perpheral Ready, I2C0 is bit 0
+
 #endif
