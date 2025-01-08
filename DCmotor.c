@@ -1,6 +1,7 @@
 /*Date: 10/31/24
 Author: Griffin Tedlie
 Interrupts using systick interrupts and PWN for DC Motor!!!
+I2C0 being used for MPU6050 to obtain orientation erector car
 TM4C123 Tiva Launchpad, uC = TM4C123GH6PMI*/
 
 #include <stdio.h>
@@ -12,16 +13,21 @@ TM4C123 Tiva Launchpad, uC = TM4C123GH6PMI*/
 #include "Init_PortA.h"
 #include "Init_PortF.h"
 #include "Init_PortB.h"
+#include "Init_I2C0.h"                  //I2C0 is PB2, PB3
 
 //declarations for ASM function, in startup_TM4C123.s
 void EnableInterrupts(void);            //Enable global interrupts, I=0
 void WaitForInterrupt(void);            //low power mode while waiting for next interrupt
-void SysTick_Handler(void);             //Branched to when Systick Interrupt occurs, MUST HAVE CORRECT CASING
-void GPIOPortF_Handler(void);            //Branched to when PortF Interrupt occurs, MUST HAVE CORRECT CASIN
+void SysTick_Handler(void);             //Branched to when Systick Interrupt occurs
+void GPIOPortF_Handler(void);            //Branched to when PortF Interrupt occurs
 
 
 uint32_t static count;                     //for counting interrupts, global so can be seen in any scope
-uint32_t static H , L;                         //H= high for PWM and L= low for PWM
+uint32_t static H , L;                     //H= high for PWM and L= low for PWM
+//MPU6050 data; [0:5] = [ACCEL_XOUT[15:8]:ACCEL_ZOUT[7:0]]
+//[6:7] = [TEMP_OUT[15:8]:TEMP_OUT[7:0]]
+//[8:13] = [GYRO_XOUT[15:8]:GYRO_ZOUT[7:0]]
+uint8_t static MPU6050Data[14] = {0};                    
 
 int main(void){
 
@@ -34,7 +40,7 @@ SysTickInterrupt_Init();       //SysTick Timer w/ interrupts enabled and set to 
 PLL_Init();                     //MAKE SURE TO CALL ALL! CLOCK INIT FUNCTIONS!
 Init_PortF_EdgeInterrupts();
                  
-//EnableInterrupts();             //enable global interrupts, THIS CALLS A FUNCTION IN THE startup_TM4C123.s file!              
+//EnableInterrupts();             //enable global interrupts, THIS CALLS A FUNCTION IN THE startup_TM4C123.s file!      Prod        
 
 //Initializing SysTick with 100 x 1 ms count
 SysTick_wait1msInterrupts(100);
@@ -43,11 +49,20 @@ count =0;
 GPIOADATA |= 0x90U;             //PA4, PA7
 GPIOADATA &= ~0x48U;            //PA3, PA6
 
+//I2C initialization below
+//Init_I2C0_Loopback();                     //testing
+//I2C0_Loopback_test();                     //testing
+
+Init_I2C0();                            //Prod
+I2C0_Write(0x68, 0x6B, 0x00);           //writing to MPU6050 PWR_MGMT_1 to wake up ;  Prod
+MPU6050Data[0] = I2C0_Read(0x68, 0x1B); //Reading from MPU6050, Gyro config reg ; testing
+I2C0_Write(0x68, 0x1B, 0x08);           //Writing to MPU6050, Gyro config reg ; testing
+MPU6050Data[1] = I2C0_Read(0x68, 0x1B); //Reading back, checking changes; testing
 
 while (1){
 
-//WaitForInterrupt();             //THIS CALLS A FUNCTION IN THE startup_TM4C123.s file!   
-count +=1;                      //increment every interrupt
+//WaitForInterrupt();             //THIS CALLS A FUNCTION IN THE startup_TM4C123.s file! Prod  
+count +=1;                        //increment every interrupt
 
 }
 

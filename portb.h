@@ -35,7 +35,7 @@ Defining general constants for port B offsets
 //I2C Specific below -- I2C0 --- PB2 is I2C0SCL , PB3 is I2C0SDA
 #define RCGCI2C (*((volatile uint32_t *)0x400FE620U))
 
-#define I2C0BASE 0x4002000
+#define I2C0BASE 0x40020000U
 #define I2C0MSA (*((volatile uint32_t*)(I2C0BASE + I2CMSA)))            //I2C0 Master Slave Address
 #define I2C0MCS (*((volatile uint32_t*)(I2C0BASE + I2CMCS)))            //I2C0 Master Control/Status
 #define I2C0MDR (*((volatile uint32_t*)(I2C0BASE + I2CMDR)))            //I2C0 Master Data
